@@ -52,7 +52,7 @@ class NewCommentForPostOwnerNotify extends Notification implements ShouldQueue, 
     {
         return (new MailMessage)
                     ->line('There is a new comment from ' . $this->comment->name . ' on your post ' . $this->comment->post->title . '.')
-                    ->action('Go to your post ', route('post.show', $this->comment->post->slug))
+                    ->action('Go to your post ', route('users.comment.edit', $this->comment->id))
                     ->line('Thank you for using Blogi System');
     }
 

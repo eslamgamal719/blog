@@ -23,7 +23,7 @@ class PagesTableSeeder extends Seeder
             'post_type' => 'page',
             'user_id' => 1,
             'category_id' => 1,
-            'slug' => $faker->sentence(mt_rand(5, 6), true)
+            'slug' => 'about-us'
         ]);
 
         Page::create([
@@ -34,7 +34,7 @@ class PagesTableSeeder extends Seeder
             'post_type' => 'page',
             'user_id' => 1,
             'category_id' => 1,
-            'slug' => $faker->sentence(mt_rand(5, 6), true)
+            'slug' => 'our-vision'
         ]);
     }
 }

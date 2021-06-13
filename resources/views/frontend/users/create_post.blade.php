@@ -7,7 +7,7 @@
                 <div class="col-lg-9 col-12">
                     <h3>Create Post</h3>
                         {!! Form::open(['route' => 'users.post.store', 'method' => 'post', 'files' => true]) !!}
-                            <div class="form-group" style="width: 870px;">
+                            <div class="form-group">
                                 {!! Form::label('title', 'Title') !!}
                                 {!! Form::text('title', old('title'), ['class' => 'form-control']) !!}
                                 @error('title')<span class="text-danger">{{ $message }}</span>@enderror
@@ -15,7 +15,7 @@
 
                             <div class="form-group">
                                 {!! Form::label('description', 'Description') !!}
-                                {!! Form::textarea('description', old('description'), ['class' => 'form-control']) !!}
+                                {!! Form::textarea('description', old('description'), ['class' => 'form-control ckeditor']) !!}
                                 @error('title')<span class="text-danger">{{ $message }}</span>@enderror
                             </div>
 
@@ -60,9 +60,9 @@
     <!-- End Blog Area -->
 
     @push('js')
-    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+
     <script>
-         CKEDITOR.replace( 'description' );
+
 
          $("#post-images").fileinput({
              theme: "fa",

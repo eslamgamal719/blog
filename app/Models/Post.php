@@ -47,4 +47,13 @@ class Post extends Model
     public function media() {
         return $this->hasMany(PostMedia::class, 'post_id');
     }
+
+
+    public function scopeActive($query) {
+        return $query->where('status', 1);
+    }
+
+    public function scopePost($query) {
+        return $query->wherePostType('post');
+    }
 }

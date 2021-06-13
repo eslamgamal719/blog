@@ -19,14 +19,14 @@ class IndexController extends Controller
 {
     public function index() {
         
-        $posts = Post::with(['category', 'user', 'media'])
+        $posts = Post::with(['user', 'media'])
             ->whereHas('category', function($q) {
                 $q->whereStatus(1);
             })->whereHas('user', function($query) {
                 $query->whereStatus(1);
             })
-            ->wherePostType('post')
-            ->whereStatus(1)
+            ->post()
+            ->active()
             ->orderBy('id', 'desc')
             ->paginate(5);
 
@@ -37,7 +37,7 @@ class IndexController extends Controller
     public function search(Request $request) {
         $keyword = isset($request->keyword) && $request->keyword != '' ? $request->keyword : null;
 
-        $posts = Post::with(['category', 'user', 'media'])
+        $posts = Post::with(['user', 'media'])
             ->whereHas('category', function($q) {
                 $q->whereStatus(1);
             })->whereHas('user', function($query) {
@@ -48,8 +48,8 @@ class IndexController extends Controller
                 $posts = $posts->search($keyword, null, true);
             }
 
-           $posts = $posts->wherePostType('post')
-            ->whereStatus(1)
+           $posts = $posts->post()
+            ->active()
             ->orderBy('id', 'desc')
             ->paginate(5);
 
@@ -78,7 +78,7 @@ class IndexController extends Controller
          });
 
         $post = $post->whereSlug($slug);
-        $post = $post->whereStatus(1)->first();
+        $post = $post->active()->first();
 
         if($post) {
            $blade = $post->post_type == 'post' ? 'post' : 'page';
@@ -172,11 +172,10 @@ class IndexController extends Controller
         $category_id = Category::whereSlug($slug)->orWhere('id', $slug)->whereStatus(1)->first()->id;
 
         if($category_id) {
-            $posts = Post::with(['category', 'user', 'media'])
-            ->withCount('approved_comments')
+            $posts = Post::with(['user', 'media'])
             ->whereCategoryId($category_id)   
-            ->wherePostType('post')
-            ->whereStatus(1)
+            ->post()
+            ->active()
             ->orderBy('id', 'desc')
             ->paginate(5);
 
@@ -193,12 +192,11 @@ class IndexController extends Controller
         $month = $exploded_date[0];
         $year = $exploded_date[1];
 
-        $posts = Post::with(['category', 'user', 'media'])
-        ->withCount('approved_comments')
+        $posts = Post::with(['user', 'media'])
         ->whereMonth('created_at', $month)
         ->whereYear('created_at', $year)
-        ->wherePostType('post')
-        ->whereStatus(1)
+        ->post()
+        ->active()
         ->orderBy('id', 'desc')
         ->paginate(5);
 
@@ -210,11 +208,10 @@ class IndexController extends Controller
         $user_id = User::whereName($username)->whereStatus(1)->first()->id;
 
         if($user_id) {
-            $posts = Post::with(['category', 'user', 'media'])
-            ->withCount('approved_comments')
+            $posts = Post::with(['user', 'media'])
             ->whereUserId($user_id)   
-            ->wherePostType('post')
-            ->whereStatus(1)
+            ->post()
+            ->active()
             ->orderBy('id', 'desc')
             ->paginate(5);
 

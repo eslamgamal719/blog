@@ -51,14 +51,13 @@
         <main>
             <div class="page-blog-details section-padding--lg bg--white">
                 <div class="container">
-                    <div class="row" id="app">
+                    <div class="row">
+
                         <div class="col-12">
                             @include('partial.flash')
                         </div>
                     
                         @yield('content')
-
-            
 
                     </div>
                 </div>
@@ -92,6 +91,8 @@
 <script src="{{asset('frontend/js/bootstrap-fileinput/themes/fa/theme.js')}}"></script>
 
 <script src="{{asset('frontend/js/custom.js')}}"></script>
+
+<script src="{{asset('frontend/js/vendor/editors/ckeditor/ckeditor.js')}}" type="text/javascript"></script>
 
 @stack('js')
 
