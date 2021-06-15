@@ -67,7 +67,6 @@
         msgLoading: 'Memuat {index} dari {files} berkas &hellip;',
         msgProgress: 'Memuat {index} dari {files} berkas - {name} - {percent}% selesai.',
         msgSelected: '{n} {files} dipilih',
-        msgProcessing: 'Processing ...',
         msgFoldersNotAllowed: 'Hanya tahan dan lepas file saja! {n} folder diabaikan.',
         msgImageWidthSmall: 'Lebar dari gambar "{name}" harus sekurangnya {size} px.',
         msgImageHeightSmall: 'Tinggi dari gambar "{name}" harus sekurangnya {size} px.',

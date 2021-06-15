@@ -12,7 +12,7 @@
 
             <div class="form-group">
                 {!! Form::label('description', 'Description') !!}
-                {!! Form::textarea('description', old('description', $post->description), ['class' => 'form-control ckeditor']) !!}
+                {!! Form::textarea('description', old('description', $post->description), ['class' => 'form-control']) !!}
                 @error('description')<span class="text-danger">{{ $message }}</span>@enderror
             </div>
 
@@ -52,42 +52,43 @@
     @include('partial.frontend.users.sidebar')
 </div>
 
-    @push('js')
- 
-    <script>
-       
+@push('script')
+<script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
 
-        $(document).ready(function() {
+<script>
+    CKEDITOR.replace( 'description' );
 
-            $("#post-images").fileinput({
-             theme: "fa",
-             maxFileCount: 5,
-             allowedFileTypes: ['image'],
-             showCancel: true,
-             showRemove: false,
-             showUpload: false,
-             overwriteInitial: false,
-             //to show or delete images
-             initialPreview: [
-                 @if ($post->media->count() > 0)
-                     @foreach($post->media as $media)
-                            "{{ asset('assets/posts/' . $media->file_name) }}",
-                     @endforeach
-                 @endif
+    $(function() {
+        $("#post-images").fileinput({
+            theme: "fas",
+            maxFileCount: {{ 5 - $post->media->count() }},
+            allowedFileTypes: ['image'],
+            showCancel: true,
+            showRemove: false,
+            showUpload: false,
+            overwriteInitial: false,
+
+            //to show or delete images
+            initialPreview: [
+                @if ($post->media->count() > 0)
+                    @foreach($post->media as $media)
+                        "{{ asset('assets/posts/' . $media->file_name) }}",
+                    @endforeach
+                @endif
              ],
              initialPreviewAsData: true,
              initialPreviewFileType: 'image',
              initialPreviewConfig:[
                 @if ($post->media->count() > 0)
                      @foreach($post->media as $media)
-                            {caption: "{{ $media->file_name }}", size: {{ $media->file_size }}, width: "120px", url:"{{ route('users.posts.media.destroy', [$media->id, '_token' => csrf_token()]) }}", key:"{{$media->id}}"},
+                            {caption: "{{ $media->file_name }}", size: {{ $media->file_size }}, width: "120px", url:"{{ route('admin.posts.media.destroy', [$media->id, '_token' => csrf_token()]) }}", key:"{{$media->id}}"},
                      @endforeach
                  @endif 
              ],
-         });
+        });
+    });
 
-        }); 
-         
-    </script>
-    @endpush 
+</script>
+
+@endpush
 @endsection

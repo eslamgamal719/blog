@@ -67,7 +67,7 @@
             @if(auth()->user()->user_image != '')
               <img class="img-profile rounded-circle" src="{{ asset('assets/users/' . auth()->user()->user_image) }}">
             @else
-              <img class="img-profile rounded-circle" src="{{ asset('assets/users/default.jpeg') }}">
+              <img class="img-profile rounded-circle" src="{{ asset('assets/users/default.png') }}">
             @endif
             
           </a>

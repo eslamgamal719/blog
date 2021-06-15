@@ -59,7 +59,10 @@
     </div>
     <!-- End Blog Area -->
 
-    @push('js')
+
+@endsection
+@section('script')
+
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
 
     <script>
@@ -78,5 +81,6 @@
         });
 
     </script>
-    @endpush 
+   
+
 @endsection

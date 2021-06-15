@@ -252,10 +252,6 @@ class UsersController extends Controller
 
             $post->update($data);
 
-            if($request->status == 1) {
-                Cache::forget('recent_posts');
-            }
-
             if($request->images && $request->images > 0) {
 
                 $i = 1;
@@ -277,6 +273,10 @@ class UsersController extends Controller
 
                     $i++;
                 }
+            }
+
+            if($request->status == 1) {
+                Cache::forget('recent_posts');
             }
 
             return redirect()->back()->with([

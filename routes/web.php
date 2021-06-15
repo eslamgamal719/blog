@@ -88,6 +88,10 @@ Route::group(['prefix' =>'admin'], function() {
         Route::get('/dashboard', 'Backend\AdminController@index')->name('admin.index_route');
         Route::get('/index', 'Backend\AdminController@index')->name('admin.index');
 
+        //delete post images
+        Route::post('/delete-post-media/{media_id}', 'Backend\PostsController@removeImage')->name('admin.posts.media.destroy');
+
+
         Route::resource('posts',            'Backend\PostsController', ['as' => 'admin']);
         Route::resource('pages',            'Backend\PagesController', ['as' => 'admin']);
         Route::resource('post_comments',    'Backend\PostCommentsController', ['as' => 'admin']);

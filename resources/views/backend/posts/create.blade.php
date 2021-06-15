@@ -6,7 +6,7 @@
       <div class="card-header py-3 d-flex">
         <h6 class="m-0 font-weight-bold text-primary">Create Post</h6>
         <div class="ml-auto">
-            <a href="{{ route('admin.posts.create') }}" class="btn btn-primary">
+            <a href="{{ route('admin.posts.index') }}" class="btn btn-primary">
                 <span class="icon text-white-50">
                     <i class="fa fa-home"></i>
                 </span>
@@ -62,6 +62,8 @@
                 <br>
                 <div class="file-loading">
                     {!! Form::file('images[]', ['id' => 'post-images', 'multiple' => 'multiple']) !!}
+                    <span class="form-text text-muted">Image width should be 800px x 500px</span>
+                    @error('images')<span class="text-danger">{{ $message }}</span>@enderror
                 </div>
             </div>
         </div>    
@@ -76,25 +78,25 @@
         
 </div>
 
+@push('script')
+<script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
 
-@push('scripts')
-    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace( 'description' );
 
-    <script>
-        CKEDITOR.replace( 'description' );
-
-        $(function() {
-            $("#posts-images").fileinput({
-                theme: "fa",
-                maxFileCount: 5,
-                allowedFileTypes: ['image'],
-                showCancel: true,
-                showRemove: false,
-                showUpload: false,
-                overwriteInitial: false,
-            });
+    $(function() {
+        $("#post-images").fileinput({
+            theme: "fas",
+            maxFileCount: 5,
+            allowedFileTypes: ['image'],
+            showCancel: true,
+            showRemove: false,
+            showUpload: false,
+            overwriteInitial: false,
         });
+    });
 
 </script>
-@endpush 
+
+@endpush
 @endsection

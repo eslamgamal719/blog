@@ -66,7 +66,6 @@
         msgLoading: 'Nahrávanie súboru {index} z {files} &hellip;',
         msgProgress: 'Nahrávanie súboru {index} z {files} - {name} - {percent}% dokončené.',
         msgSelected: '{n} {files} vybraté',
-        msgProcessing: 'Processing ...',
         msgFoldersNotAllowed: 'Tiahni a pusť iba súbory! Vynechané {n} pustené prečinok(y).',
         msgImageWidthSmall: 'Šírka obrázku "{name}", musí byť minimálne {size} px.',
         msgImageHeightSmall: 'Výška obrázku "{name}", musí byť minimálne {size} px.',
