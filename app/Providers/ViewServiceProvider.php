@@ -6,6 +6,7 @@ use DB;
 use App\Models\Post;
 use App\Models\Comment;
 use App\Models\Category;
+use App\Models\Permission;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
@@ -105,5 +106,31 @@ class ViewServiceProvider extends ServiceProvider
                 
             });
         }
+
+
+        if(request()->is('admin/*')) {
+
+            //cache
+            view()->composer('*', function($view) {
+                
+                //recent_posts
+                if(!Cache::has('admin_side_menu')) {
+
+                    Cache::forever('admin_side_menu', Permission::tree());
+                }
+
+                $admin_side_menu = Cache::get('admin_side_menu');
+
+                $view->with([
+                    'admin_side_menu' => $admin_side_menu,
+                ]);
+            });
+        }
+
+
     }
+
+
+
+
 }

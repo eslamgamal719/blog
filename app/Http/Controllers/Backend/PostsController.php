@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class PostsController extends Controller
@@ -14,7 +16,8 @@ class PostsController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::wherePostType('post')->orderBy('id', 'desc')->paginate(10);
+        return view('backend.posts.index', compact('posts'));
     }
 
     /**
@@ -24,7 +27,8 @@ class PostsController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::orderBy('id', 'desc')->pluck('name', 'id');
+        return view('backend.posts.create', compact('categories'));
     }
 
     /**

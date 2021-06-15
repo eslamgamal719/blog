@@ -13,15 +13,17 @@
 
     <title>{{ config('app.name', 'Laravel')}} - Dashboard </title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
   <!-- Custom fonts for this template-->
   <link href="{{asset('backend/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
   <!-- Custom styles for this template-->
   <link href="{{asset('backend/css/sb-admin-2.min.css')}}" rel="stylesheet">
+
+  <!-- file-input -->
+  <link href="{{ asset('backend/vendor/bootstrap-fileinput/css/fileinput.min.css') }}" media="all" rel="stylesheet" type="text/css" />
+
   @stack('css')
 </head>   
 <body id="page-top">
@@ -78,14 +80,8 @@
 
 
     </div>
-
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}"></script>
-
-
-        <!-- Bootstrap core JavaScript-->
-        <script src="{{asset('backend/vendor/jquery/jquery.min.js')}}"></script>
-        <script src="{{asset('backend/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 
         <!-- Core plugin JavaScript-->
         <script src="{{asset('backend/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
@@ -93,13 +89,15 @@
         <!-- Custom scripts for all pages-->
         <script src="{{asset('backend/js/sb-admin-2.min.js')}}"></script>
 
-        <!-- Page level plugins -->
-        <script src="{{asset('backend/vendor/chart.js/Chart.min.js')}}"></script>
+        <script src="{{asset('backend/vendor/bootstrap-fileinput/js/plugins/piexif.min.js')}}"></script>
+        <script src="{{asset('backend/vendor/bootstrap-fileinput/js/plugins/sortable.min.js')}}"></script>
+        <script src="{{asset('backend/vendor/bootstrap-fileinput/js/plugins/purify.min.js')}}"></script>
 
-        <!-- Page level custom scripts -->
-        <script src="{{asset('backend/js/demo/chart-area-demo.js')}}"></script>
-        <script src="{{asset('backend/js/demo/chart-pie-demo.js')}}"></script>
+        <script src="{{asset('backend/vendor/bootstrap-fileinput/js/fileinput.min.js')}}"></script>
+        <script src="{{asset('backend/vendor/bootstrap-fileinput/themes/fa/theme.js')}}"></script>
 
+  
+        <script src="{{asset('frontend/js/vendor/editors/ckeditor/ckeditor.js')}}" type="text/javascript"></script>
         <script src="{{asset('backend/js/custom.js')}}"></script>
 
         @stack('js')

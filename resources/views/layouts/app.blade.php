@@ -73,26 +73,26 @@
 
 
 <!-- JS Files -->
-<script src="{{asset('frontend/js/vendor/jquery-3.2.1.min.js')}}"></script>
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}"></script>
 <script src="{{asset('frontend/js/popper.min.js')}}"></script>
 <script src="{{asset('frontend/js/bootstrap.min.js')}}"></script>
 <script src="{{asset('frontend/js/plugins.js')}}"></script>
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+
 <script src="{{asset('frontend/js/active.js')}}"></script>
 
 
 <!-- file-input -->
 <script src="{{asset('frontend/js/bootstrap-fileinput/js/plugins/piexif.min.js')}}"></script>
 <script src="{{asset('frontend/js/bootstrap-fileinput/js/plugins/sortable.min.js')}}"></script>
-<script src="{{asset('frontend/js/bootstrap-fileinput/js/plugins/purify.min.js')}}"></script>
+<script src="{{ asset('frontend/js/bootstrap-fileinput/js/plugins/purify.min.js')  }}"></script> 
 
 <script src="{{asset('frontend/js/bootstrap-fileinput/js/fileinput.min.js')}}"></script>
 <script src="{{asset('frontend/js/bootstrap-fileinput/themes/fa/theme.js')}}"></script>
 
 <script src="{{asset('frontend/js/custom.js')}}"></script>
 
-<script src="{{asset('frontend/js/vendor/editors/ckeditor/ckeditor.js')}}" type="text/javascript"></script>
+
 
 @stack('js')
 

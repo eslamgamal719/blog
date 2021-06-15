@@ -56,4 +56,9 @@ class Post extends Model
     public function scopePost($query) {
         return $query->wherePostType('post');
     }
+
+
+    public function status() {
+        return $this->status == 1 ? 'Active' : 'Inactive';
+    }
 }

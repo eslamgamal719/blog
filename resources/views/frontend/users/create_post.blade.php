@@ -15,7 +15,7 @@
 
                             <div class="form-group">
                                 {!! Form::label('description', 'Description') !!}
-                                {!! Form::textarea('description', old('description'), ['class' => 'form-control ckeditor']) !!}
+                                {!! Form::textarea('description', old('description'), ['class' => 'form-control']) !!}
                                 @error('title')<span class="text-danger">{{ $message }}</span>@enderror
                             </div>
 
@@ -60,19 +60,23 @@
     <!-- End Blog Area -->
 
     @push('js')
+    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
 
     <script>
+        CKEDITOR.replace( 'description' );
 
+        $(function() {
+            $("#post-images").fileinput({
+                theme: "fa",
+                maxFileCount: 5,
+                allowedFileTypes: ['image'],
+                showCancel: true,
+                showRemove: false,
+                showUpload: false,
+                overwriteInitial: false,
+            });
+        });
 
-         $("#post-images").fileinput({
-             theme: "fa",
-             maxFileCount: 5,
-             allowedFileTypes: ['image'],
-             showCancel: true,
-             showRemove: false,
-             showUpload: false,
-             overwriteInitial: false,
-         });
     </script>
     @endpush 
 @endsection
