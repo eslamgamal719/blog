@@ -2,19 +2,29 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Http\Controllers\Controller;
-use App\Models\Category;
 use App\Models\Post;
+use App\Models\Category;
 use App\Models\PostMedia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Validator;
 use Stevebauman\Purify\Facades\Purify;
+use Illuminate\Support\Facades\Validator;
+
 
 class PostsController extends Controller
 {
+    public function __construct()
+    {
+        if(auth()->check()) {
+            $this->middleware('auth');
+        }else {
+            return view('backend.auth.login');
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -22,8 +32,38 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = Post::with(['category', 'user', 'comments'])->wherePostType('post')->orderBy('id', 'desc')->paginate(10);
-        return view('backend.posts.index', compact('posts'));
+        if(!auth()->user()->ability('admin', 'manage_posts,show_posts')) {
+            return redirect();
+        }
+
+        $keyword = (isset(request()->keyword) && request()->keyword != '') ? request()->keyword : null;
+        $categoryId = (isset(request()->category_id) && request()->category_id != '') ? request()->category_id : null;
+        $status = (isset(request()->status) && request()->status != '') ? request()->status : null;
+        $sort_by = (isset(request()->sort_by) && request()->sort_by != '') ? request()->sort_by : 'id';
+        $order_by = (isset(request()->order_by) && request()->order_by != '') ? request()->order_by : 'desc';
+        $limit_by = (isset(request()->limit_by) && request()->limit_by != '') ? request()->limit_by : '10';
+
+        $categories = Category::orderBy('id', 'desc')->pluck('name', 'id');
+        
+        $posts = Post::with(['category', 'user', 'comments'])->wherePostType('post');
+
+        if($keyword != null) {
+            $posts = $posts->search($keyword);
+        }
+
+        if($categoryId != null) {
+            $posts = $posts->whereCategoryId($categoryId);
+        }
+
+        if($status != null) {
+            $posts = $posts->whereStatus($status);
+        }
+   
+        $posts = $posts->orderBy($sort_by, $order_by);
+        
+        $posts = $posts->paginate($limit_by);
+
+        return view('backend.posts.index', compact('posts', 'categories'));
     }
 
     /**
@@ -33,6 +73,10 @@ class PostsController extends Controller
      */
     public function create()
     {
+        if(!auth()->user()->ability('admin', 'create_posts')) {
+            return redirect();
+        }
+
         $categories = Category::orderBy('id', 'desc')->pluck('name', 'id');
         return view('backend.posts.create', compact('categories'));
     }
@@ -45,6 +89,10 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
+        if(!auth()->user()->ability('admin', 'create_posts')) {
+            return redirect();
+        }
+
         $validator = Validator::make($request->all(), [
             'title'          => 'required',
             'description'    => 'required|min:10',
@@ -100,6 +148,16 @@ class PostsController extends Controller
         ]);
     }
 
+    public function show($id) 
+    {
+        if(!auth()->user()->ability('admin', 'display_posts')) {
+            return redirect();
+        }
+
+        $post = Post::with(['media', 'category', 'user', 'comments'])->whereId($id)->wherePostType('post')->first();
+        return view('backend.posts.show', compact('post'));
+    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -109,6 +167,10 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
+        if(!auth()->user()->ability('admin', 'update_posts')) {
+            return redirect();
+        }
+
         $categories = Category::orderBy('id', 'desc')->pluck('name', 'id');
         $post = Post::with('media')->whereId($id)->wherePostType('post')->first();
         return view('backend.posts.edit', compact('categories', 'post'));
@@ -123,6 +185,10 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!auth()->user()->ability('admin', 'update_posts')) {
+            return redirect();
+        }
+
         $validator = Validator::make($request->all(), [
             'title'          => 'required',
             'description'    => 'required|min:10',
@@ -195,11 +261,40 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if(!auth()->user()->ability('admin', 'delete_posts')) {
+            return redirect();
+        }
+
+        $post = Post::whereId($id)->wherePostType('post')->first();
+        
+        if($post) {
+            if($post->media->count() > 0) {
+                foreach($post->media as $media) {
+                    if(File::exists('assets/posts/' . $media->file_name)) {
+                        unlink('assets/posts/' . $media->file_name);
+                    }
+                }
+            }
+            $post->delete();
+
+            return redirect()->route('admin.posts.index')->with([
+                'message'     => 'Post Deleted Successfully',
+                'alert-type'  => 'success'
+            ]);
+        }
+
+        return redirect()->route('admin.posts.index')->with([
+            'message'     => 'Something Was Wrong',
+            'alert-type'  => 'danger'
+        ]);
     }
 
 
-    public function removeImage($media_id) {
+    public function removeImage($media_id)
+    {
+        if(!auth()->user()->ability('admin', 'delete_posts')) {
+            return redirect();
+        }
 
         $media = PostMedia::whereId($media_id)->first();
 

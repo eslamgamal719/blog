@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Backend\Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\VerifiesEmails;
-use Illuminate\Http\Request;
+
 
 class VerificationController extends Controller
 {

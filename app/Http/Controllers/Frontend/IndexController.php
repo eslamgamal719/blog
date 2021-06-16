@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
+use App\Models\Post;
+use App\Models\User;
 use App\Models\Comment;
 use App\Models\Contact;
 use App\Models\Category;
-use App\Models\Post;
-use App\Models\User;
-use App\Notifications\NewCommentForPostOwnerNotify;
 use Illuminate\Http\Request;
-use Stevebauman\Purify\Facades\Purify;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
+use Stevebauman\Purify\Facades\Purify;
 use Illuminate\Support\Facades\Validator;
+use App\Notifications\NewCommentForPostOwnerNotify;
 
 
 class IndexController extends Controller

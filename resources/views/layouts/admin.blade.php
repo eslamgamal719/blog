@@ -21,6 +21,7 @@
     <link href="{{ asset('backend/css/sb-admin-2.min.css') }}" rel="stylesheet">
     <link href="{{ asset('backend/vendor/bootstrap-fileinput/css/fileinput.min.css') }}" rel="stylesheet">
     @yield('style')
+    @stack('style')
 </head>
 <body id="page-top">
     <div id="app">
@@ -97,5 +98,6 @@
     <script src="{{ asset('backend/js/custom.js') }}"></script>
 
     @stack('script')
+    @yield('script')
 </body>
 </html>

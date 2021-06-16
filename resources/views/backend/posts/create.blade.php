@@ -33,7 +33,7 @@
                 <div class="form-group">
                     {!! Form::label('description', 'Description') !!}
                     {!! Form::textarea('description', old('description'), ['class' => 'form-control ckeditor']) !!}
-                    @error('title')<span class="text-danger">{{ $message }}</span>@enderror
+                    @error('description')<span class="text-danger">{{ $message }}</span>@enderror
                 </div>
             </div>
         </div>

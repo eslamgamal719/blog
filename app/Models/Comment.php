@@ -11,4 +11,9 @@ class Comment extends Model
     public function post() {
         return $this->belongsTo(Post::class, 'post_id');
     }
+
+
+    public function status() {
+        return $this->status == 1 ? 'Active' : 'Inactive';
+    }
 }

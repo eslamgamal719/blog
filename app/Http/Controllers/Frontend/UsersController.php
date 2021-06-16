@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use Illuminate\Support\Facades\Cache;
-use App\Http\Controllers\Controller;
-use App\Models\Category;
 use App\Models\Post;
 use App\Models\Comment;
+use App\Models\Category;
 use App\Models\PostMedia;
 use GuzzleHttp\Middleware;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Cache;
 use Stevebauman\Purify\Facades\Purify;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 
 class UsersController extends Controller

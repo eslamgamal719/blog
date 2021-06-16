@@ -34,6 +34,7 @@
     <script src="{{ asset('frontend/js/vendor/modernizr-3.5.0.min.js') }}"></script>
 
     @yield('style')
+    @stack('style')
 </head>
 <body>
     <div id="app">
@@ -74,5 +75,6 @@
 
     <script src="{{ asset('frontend/js/custom.js') }}"></script>
     @yield('script')
+    @stack('script')
 </body>
 </html>

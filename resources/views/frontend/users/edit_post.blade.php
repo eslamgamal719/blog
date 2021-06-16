@@ -4,7 +4,7 @@
 <div class="col-lg-9 col-12">
     <h3>Edit Post ({{ $post->title }})</h3>
         {!! Form::model($post, ['route' => ['users.post.update', $post->id], 'method' => 'put', 'files' => true]) !!}
-            <div class="form-group" style="width: 870px;">
+            <div class="form-group" >
                 {!! Form::label('title', 'Title') !!}
                 {!! Form::text('title', old('title', $post->title), ['class' => 'form-control']) !!}
                 @error('title')<span class="text-danger">{{ $message }}</span>@enderror
@@ -60,7 +60,7 @@
 
     $(function() {
         $("#post-images").fileinput({
-            theme: "fas",
+            theme: "fa",
             maxFileCount: {{ 5 - $post->media->count() }},
             allowedFileTypes: ['image'],
             showCancel: true,
@@ -81,7 +81,7 @@
              initialPreviewConfig:[
                 @if ($post->media->count() > 0)
                      @foreach($post->media as $media)
-                            {caption: "{{ $media->file_name }}", size: {{ $media->file_size }}, width: "120px", url:"{{ route('admin.posts.media.destroy', [$media->id, '_token' => csrf_token()]) }}", key:"{{$media->id}}"},
+                            {caption: "{{ $media->file_name }}", size: {{ $media->file_size }}, width: "120px", url:"{{ route('users.posts.media.destroy', [$media->id, '_token' => csrf_token()]) }}", key:"{{$media->id}}"},
                      @endforeach
                  @endif 
              ],
