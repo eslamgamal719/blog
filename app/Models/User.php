@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Notifications\Notifiable;
+use Nicolaslopezj\Searchable\SearchableTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Mindscms\Entrust\Traits\EntrustUserWithPermissionsTrait;
+
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable, EntrustUserWithPermissionsTrait;
+    use Notifiable, EntrustUserWithPermissionsTrait, SearchableTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -37,6 +39,17 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
 
+    protected $searchable = [
+        'columns' => [
+            'users.name'       => 10,
+            'users.username'   => 10,
+            'users.email'      => 10,
+            'users.mobile'     => 10,
+            'users.bio'        => 10,
+        ]
+    ];
+
+
     public function receivesBroadcastNotificationsOn()
     {
         return 'App.User.'.$this->id;
@@ -51,5 +64,10 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function comments() {
         return $this->hasMany(Comment::class, 'user_id');
+    }
+
+
+    public function status() {
+        return $this->status == 1 ? 'Active' : 'Inactive';
     }
 }

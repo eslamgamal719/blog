@@ -33,7 +33,7 @@ class PostsController extends Controller
     public function index()
     {
         if(!auth()->user()->ability('admin', 'manage_posts,show_posts')) {
-            return redirect();
+            return redirect('admin/index');
         }
 
         $keyword = (isset(request()->keyword) && request()->keyword != '') ? request()->keyword : null;

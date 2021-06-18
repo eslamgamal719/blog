@@ -33,8 +33,8 @@
     <!-- Modernizer js -->
     <script src="{{ asset('frontend/js/vendor/modernizr-3.5.0.min.js') }}"></script>
 
-    @yield('style')
-    @stack('style')
+    @yield('css')
+    @stack('css')
 </head>
 <body>
     <div id="app">

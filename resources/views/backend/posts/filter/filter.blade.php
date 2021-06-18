@@ -21,7 +21,7 @@
             </div>
             <div class="col-2">
             <div class="form-group">
-                    {!! Form::select('sort_by', ['' => '---', 'title' => 'Title', 'create_at' => 'Created Date'], old('sort_by', request()->input('sort_by')), ['class' => 'form-control']) !!}
+                    {!! Form::select('sort_by', ['' => '---', 'title' => 'Title', 'created_at' => 'Created Date'], old('sort_by', request()->input('sort_by')), ['class' => 'form-control']) !!}
                 </div>
             </div>
             <div class="col-2">

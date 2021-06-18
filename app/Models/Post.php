@@ -62,3 +62,5 @@ class Post extends Model
         return $this->status == 1 ? 'Active' : 'Inactive';
     }
 }
+
+

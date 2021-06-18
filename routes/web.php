@@ -77,10 +77,10 @@ Route::group(['prefix' =>'admin'], function() {
     Route::get('/login',                            ['as' => 'admin.show_login_form',        'uses' => 'backend\Auth\LoginController@showLoginForm']);
     Route::post('login',                            ['as' => 'admin.login',                  'uses' => 'backend\Auth\LoginController@login']);
     Route::post('logout',                           ['as' => 'admin.logout',                 'uses' => 'backend\Auth\LoginController@logout']);
-    Route::get('password/reset',                    ['as' => 'password.request',                'uses' => 'backend\Auth\ForgotPasswordController@showLinkRequestForm']);
-    Route::post('password/email',                   ['as' => 'password.email',                  'uses' => 'backend\Auth\ForgotPasswordController@sendResetLinkEmail']);
-    Route::get('password/reset/{token}',            ['as' => 'password.reset',                  'uses' => 'backend\Auth\ResetPasswordController@showResetForm']);
-    Route::post('password/reset',                   ['as' => 'password.update',                 'uses' => 'backend\Auth\ResetPasswordController@reset']);
+    Route::get('password/reset',                    ['as' => 'admin.password.request',                'uses' => 'backend\Auth\ForgotPasswordController@showLinkRequestForm']);
+    Route::post('password/email',                   ['as' => 'admin.password.email',                  'uses' => 'backend\Auth\ForgotPasswordController@sendResetLinkEmail']);
+    Route::get('password/reset/{token}',            ['as' => 'admin.password.reset',                  'uses' => 'backend\Auth\ResetPasswordController@showResetForm']);
+    Route::post('password/reset',                   ['as' => 'admin.password.update',                 'uses' => 'backend\Auth\ResetPasswordController@reset']);
 
 
     Route::group(['middleware' => ['roles', 'role:admin|editor']], function() {
@@ -88,17 +88,26 @@ Route::group(['prefix' =>'admin'], function() {
         Route::get('/dashboard', 'Backend\AdminController@index')->name('admin.index_route');
         Route::get('/index', 'Backend\AdminController@index')->name('admin.index');
 
-        //delete post images
+        //posts routes
         Route::post('/delete-post-media/{media_id}', 'Backend\PostsController@removeImage')->name('admin.posts.media.destroy');
-
-
         Route::resource('posts',            'Backend\PostsController', ['as' => 'admin']);
+
+        //pages routes
+        Route::post('/delete-page-media/{media_id}', 'Backend\PagesController@removeImage')->name('admin.pages.media.destroy');
         Route::resource('pages',            'Backend\PagesController', ['as' => 'admin']);
+
+        //users routes
+        Route::resource('users',            'Backend\UsersController', ['as' => 'admin']);
+        Route::post('/users/remove-image', 'Backend\UsersController@removeImage')->name('admin.users.remove_image');
+
+        //supervisors routes
+        Route::post('/supervisors/remove-image', 'Backend\SupervisorsController@removeImage')->name('admin.supervisors.remove_image');
+        Route::resource('supervisors',       'Backend\SupervisorsController', ['as' => 'admin']);
+
+
         Route::resource('post_comments',    'Backend\PostCommentsController', ['as' => 'admin']);
         Route::resource('post_categories',  'Backend\PostCategoriesController', ['as' => 'admin']);
-        Route::resource('users',            'Backend\UsersController', ['as' => 'admin']);
         Route::resource('contact_us',       'Backend\ContactUsController', ['as' => 'admin']);
-        Route::resource('supervisor',       'Backend\SupervisorsController', ['as' => 'admin']);
         Route::resource('settings',         'Backend\SettingsController', ['as' => 'admin']);
 
     });
