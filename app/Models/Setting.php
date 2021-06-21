@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Setting extends Model
 {
     
-    protected $guraded = [];
+    protected $guarded = [];
 
     public $timestamps = false;
 }

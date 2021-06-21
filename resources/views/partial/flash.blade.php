@@ -6,21 +6,17 @@
         </button>
     </div>
 @endif
-
-<!-- from  verify.blade.php -->
-@if (session('resent'))
+@if (session('status'))
     <div class="alert alert-success alert-dismissible fade show" role="alert" id="alert-message">
-        {{ __('A fresh verification link has been sent to your email address.') }}
+        {{ session('status') }}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
 @endif
-
-<!-- from  email.blade.php -->
-@if (session('status'))
+@if (session('resent'))
     <div class="alert alert-success alert-dismissible fade show" role="alert" id="alert-message">
-        {{ session('status') }}
+        {{ __('A fresh verification link has been sent to your email address.') }}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>

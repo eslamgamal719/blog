@@ -10,6 +10,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Notifications\NewCommentForAdminNotify;
 use Stevebauman\Purify\Facades\Purify;
 use Illuminate\Support\Facades\Validator;
 use App\Notifications\NewCommentForPostOwnerNotify;
@@ -117,9 +118,15 @@ class IndexController extends Controller
             //Comment::create($data);
              $comment = $post->comments()->create($data);     //instead of using comment model too
 
-             if(auth()->guest() || auth()->id() != $post->user_id) {
+            if(auth()->guest() || auth()->id() != $post->user_id) {
                  $post->user->notify(new NewCommentForPostOwnerNotify($comment));
-             }
+            }
+
+            User::whereHas('roles', function($query) {
+                $query->whereIn('name', ['admin', 'editor']);
+            })->each(function($admin, $key) use ($comment) {
+                $admin->notify(new NewCommentForAdminNotify($comment));
+            });
 
             return redirect()->back()->with([
                 'message' => 'Comment Added Successfully',

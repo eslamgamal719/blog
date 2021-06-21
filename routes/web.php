@@ -85,6 +85,11 @@ Route::group(['prefix' =>'admin'], function() {
 
     Route::group(['middleware' => ['roles', 'role:admin|editor']], function() {
 
+        Route::any('/notifications/get', 'Backend\NotificationsController@getNotifications');
+        Route::any('/notifications/read', 'Backend\NotificationsController@markAsRead');
+        Route::any('/notifications/read/{id}', 'Backend\NotificationsController@markAsReadAndRedirect');
+
+
         Route::get('/dashboard', 'Backend\AdminController@index')->name('admin.index_route');
         Route::get('/index', 'Backend\AdminController@index')->name('admin.index');
 

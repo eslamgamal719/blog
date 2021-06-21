@@ -16,7 +16,7 @@
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
 
-      @role(['admin'])
+    @role(['admin'])
         @foreach($admin_side_menu as $menu)
             @if (count($menu->appearedChildren) == 0)
                 <li class="nav-item {{ $menu->id == getParentShowOf($current_page) ? 'active' : '' }}">
@@ -44,10 +44,9 @@
                 </li>
             @endif
         @endforeach
-      @endrole
+    @endrole
 
-
-  @role(['editor'])  
+    @role(['editor'])
     @foreach($admin_side_menu as $menu)
         @permission($menu->name)
             @if (count($menu->appearedChildren) == 0)
@@ -79,10 +78,7 @@
             @endif
         @endpermission
     @endforeach
-  @endrole
-
-
-  
+    @endrole
 
 
 

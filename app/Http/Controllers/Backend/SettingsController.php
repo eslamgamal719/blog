@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Backend;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\Setting;
+use Illuminate\Http\Request;
+use Spatie\Valuestore\Valuestore;
+use App\Http\Controllers\Controller;
+
 
 class SettingsController extends Controller
 {
@@ -37,13 +39,27 @@ class SettingsController extends Controller
     
     public function update(Request $request, $id)
     {
-        //
+        for($i = 0; $i < count($request->id); $i++) {
+
+            $input['value'] = isset($request->value[$i]) ? $request->value[$i] : null;
+            Setting::whereId($request->id[$i])->first()->update($input);
+        }
+
+        $this->generateCache();
+
+        return redirect()->route('admin.settings.index')->with([
+            'message'       => 'Settings Updated Successfully',
+            'alert-type'    => 'success',
+        ]);
     }
 
 
-    
-    public function destroy($id)
+    private function generateCache() 
     {
-        //
+        $settings = Valuestore::make(config_path('settings.json'));
+        Setting::all()->each(function($item) use ($settings) {
+            $settings->put($item->key, $item->value);
+        });
     }
+
 }
