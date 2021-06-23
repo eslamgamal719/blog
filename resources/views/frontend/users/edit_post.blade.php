@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('style')
     <link rel="stylesheet" href="{{ asset('frontend/js/summernote/summernote-bs4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/js/select2/css/select2.min.css') }}">
 @endsection
 @section('content')
 
@@ -17,6 +18,14 @@
                         {!! Form::label('description', 'Description') !!}
                         {!! Form::textarea('description', old('description', $post->description), ['class' => 'form-control summernote']) !!}
                         @error('description')<span class="text-danger">{{ $message }}</span>@enderror
+                    </div>
+
+                    <div class="form-group">
+                        {!! Form::label('tags', 'Tags') !!}
+                        <button type="button" class="btn btn-primary btn-xs mb-1" id="select_btn_tag">Select all</button>
+                        <button type="button" class="btn btn-primary btn-xs mb-1" id="deselect_btn_tag">Deselect all</button>
+                        {!! Form::select('tags[]', $tags->toArray(), old('tags', $post->tags), ['class' => 'form-control select2', 'multiple' => 'multiple', 'id' => 'select_all_tags']) !!}
+                        @error('tags')<span class="text-danger">{{ $message }}</span>@enderror
                     </div>
 
                     <div class="row">
@@ -58,6 +67,7 @@
 @endsection
 @section('script')
     <script src="{{ asset('frontend/js/summernote/summernote-bs4.min.js') }}"></script>
+    <script src="{{ asset('frontend/js/select2/js/select2.full.min.js') }}"></script>
     <script>
         $(function () {
             $('.summernote').summernote({
@@ -74,9 +84,25 @@
                 ]
             });
 
+
+            $('.select2').select2({
+                'tags': true
+            });
+
+            $('#select_btn_tag').on('click', function() {
+                $('#select_all_tags > option').prop('selected', 'selected');
+                $('#select_all_tags').trigger('change');
+            });
+
+            $('#deselect_btn_tag').on('click', function() {
+                $('#select_all_tags > option').prop('selected', '');
+                $('#select_all_tags').trigger('change');
+            });
+
+
             $('#post-images').fileinput({
                 theme: "fa",
-                maxFileCount: 5,
+                maxFileCount: {{ 5 - $post->media->count() }},
                 allowedFileTypes: ['image'],
                 showCancel: true,
                 showRemove: false,
@@ -94,7 +120,7 @@
                 initialPreviewConfig: [
                     @if($post->media->count() > 0)
                         @foreach($post->media as $media)
-                            {caption: "{{ $media->file_name }}", size: {{ $media->file_size }}, width: "120px", url: "{{ route('users.post.media.destroy', [$media->id, '_token' => csrf_token()]) }}", key: "{{ $media->id }}"},
+                            {caption: "{{ $media->file_name }}", size: {{ $media->file_size }}, width: "120px", url: "{{ route('users.posts.media.destroy', [$media->id, '_token' => csrf_token()]) }}", key: "{{ $media->id }}"},
                         @endforeach
                     @endif
                 ],

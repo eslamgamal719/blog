@@ -1,4 +1,8 @@
 @extends('layouts.admin')
+@section('style')
+    <link rel="stylesheet" href="{{ asset('frontend/js/summernote/summernote-bs4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/js/select2/css/select2.min.css') }}">
+@endsection
 @section('content')
 
     <div class="card shadow mb-4">
@@ -22,6 +26,18 @@
                         {!! Form::label('title', 'Title') !!}
                         {!! Form::text('title', old('title', $post->title), ['class' => 'form-control']) !!}
                         @error('title')<span class="text-danger">{{ $message }}</span>@enderror
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                <div class="form-group">
+                        {!! Form::label('tags', 'Tags') !!}
+                        <button type="button" class="btn btn-primary btn-xs mb-1" id="select_btn_tag">Select all</button>
+                        <button type="button" class="btn btn-primary btn-xs mb-1" id="deselect_btn_tag">Deselect all</button>
+                        {!! Form::select('tags[]', $tags->toArray(), old('tags', $post->tags), ['class' => 'form-control select2', 'multiple' => 'multiple', 'id' => 'select_all_tags']) !!}
+                        @error('tags')<span class="text-danger">{{ $message }}</span>@enderror
                     </div>
                 </div>
             </div>
@@ -75,6 +91,8 @@
 
 @endsection
 @section('script')
+    <script src="{{ asset('frontend/js/summernote/summernote-bs4.min.js') }}"></script>
+    <script src="{{ asset('frontend/js/select2/js/select2.full.min.js') }}"></script>
     <script>
         $(function () {
             $('.summernote').summernote({
@@ -90,6 +108,23 @@
                     ['view', ['fullscreen', 'codeview', 'help']]
                 ]
             });
+
+
+            $('.select2').select2({
+                'tags': true
+            });
+
+            $('#select_btn_tag').on('click', function() {
+                $('#select_all_tags > option').prop('selected', 'selected');
+                $('#select_all_tags').trigger('change');
+            });
+
+            $('#deselect_btn_tag').on('click', function() {
+                $('#select_all_tags > option').prop('selected', '');
+                $('#select_all_tags').trigger('change');
+            });
+
+
 
             $('#post-images').fileinput({
                 theme: "fas",

@@ -10,6 +10,7 @@ use GuzzleHttp\Middleware;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Tag;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
@@ -151,21 +152,24 @@ class UsersController extends Controller
 
 
 
-    public function create_post() {
-
+    public function create_post()
+    {
+        $tags = Tag::pluck('name', 'id');
         $categories = Category::whereStatus(1)->pluck('name', 'id');
-        return view('frontend.users.create_post', compact('categories'));
+        return view('frontend.users.create_post', compact('categories', 'tags'));
     }
     
 
-    public function store_post(Request $request) {
-    
+
+    public function store_post(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'title'          => 'required',
             'description'    => 'required|min:10',
             'status'         => 'required',
             'category_id'    => 'required',
             'comment_able'   => 'required',
+            'tags.*'         => 'required'
         ]);
 
         if($validator->fails()) {
@@ -203,8 +207,22 @@ class UsersController extends Controller
             }
         }
 
+       if(count($request->tags) > 0) {
+           $new_tags = [];
+            foreach($request->tags as $tag) {
+                $tag = Tag::firstOrCreate([
+                    'id' => $tag
+                ], [
+                    'name' => $tag
+                ]);
+                $new_tags[] = $tag->id;
+            }
+            $post->tags()->sync($new_tags);
+        }
+
         if($request->status == 1) {
             Cache::forget('recent_posts');
+            Cache::forget('global_tags');
         }
 
         return redirect()->back()->with([
@@ -219,8 +237,9 @@ class UsersController extends Controller
         $post = Post::whereSlug($post_id)->orWhere('id', $post_id)->whereUserId(auth()->id())->first();
 
         if($post) {
+            $tags = Tag::pluck('name', 'id');
             $categories = Category::whereStatus(1)->pluck('name', 'id');
-            return view('frontend.users.edit_post', compact('post', 'categories'));
+            return view('frontend.users.edit_post', compact('post', 'categories', 'tags'));
         }
 
         return redirect()->route('frontend.index');
@@ -275,9 +294,22 @@ class UsersController extends Controller
                 }
             }
 
-            if($request->status == 1) {
+            if(count($request->tags) > 0) {
+                $new_tags = [];
+                 foreach($request->tags as $tag) {
+                     $tag = Tag::firstOrCreate([
+                         'id' => $tag
+                     ], [
+                         'name' => $tag
+                     ]);
+                     $new_tags[] = $tag->id;
+                 }
+                 $post->tags()->sync($new_tags);
+             }
+
                 Cache::forget('recent_posts');
-            }
+                Cache::forget('global_tags');
+            
 
             return redirect()->back()->with([
                 'message'     => 'Post Updated Successfully',

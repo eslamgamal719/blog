@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Backend\Api\ApiController;
 
 
-Route::get('/chart/comments_chart', 'Backend\Api\ApiController@comments_chart');
-Route::get('/chart/users_chart', 'Backend\Api\ApiController@users_chart');
+Route::get('/chart/comments_chart',  [ApiController::class, 'comments_chart']);
+Route::get('/chart/users_chart',     [ApiController::class, 'users_chart']);
  

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 
@@ -53,7 +54,7 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
         if($user->status == 1) {
-            return redirect()->route('frontend.dashboard')->with([
+            return redirect()->route('users.dashboard')->with([
                 'message' => 'Loged In Successfully.',
                 'alert-type' => 'success'
             ]);
@@ -64,5 +65,15 @@ class LoginController extends Controller
                 'alert-type' => 'warning'
             ]);
 
+    }
+
+    public function redirectToProvider($provider) {
+        return Socialite::driver($provider)->redirect();
+    }
+
+    public function handleProviderCallback($provider) {
+        $user = Socialite::driver($provider)->user();
+
+        dd($user);
     }
 }

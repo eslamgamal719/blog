@@ -30,4 +30,18 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+
+
+    'facebook' => [
+        'client_id' => '',
+        'client_secret' => '',
+        'redirect' => 'https://blogi.test/login/facebook/callback',
+    ],
+
+    'twitter' => [
+        'client_id' => '3993551567380419',
+        'client_secret' => 'e21ef80bf470b335d107a0cd27e01ef5',
+        'redirect' => 'https://blogi.test/login/twitter/callback',
+    ],
+
 ];

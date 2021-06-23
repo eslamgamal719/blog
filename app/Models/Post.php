@@ -61,6 +61,11 @@ class Post extends Model
     public function status() {
         return $this->status == 1 ? 'Active' : 'Inactive';
     }
+
+
+    public function tags() {
+        return $this->belongsToMany(Tag::class, 'posts_tags');
+    }
 }
 
 

@@ -3,7 +3,7 @@
 
     <div class="col-lg-9 col-12">
         <h3>Update Information</h3>
-        {!! Form::open(['route' => 'users.update_info', 'name' => 'user_info', 'id' => 'user_info', 'method' => 'post', 'files' => true]) !!}
+        {!! Form::open(['route' => 'users.update.info', 'name' => 'user_info', 'id' => 'user_info', 'method' => 'post', 'files' => true]) !!}
         <div class="row">
             <div class="col-3">
                 <div class="form-group">
@@ -72,7 +72,7 @@
         <hr>
 
         <h3>Update Password</h3>
-        {!! Form::open(['route' => 'users.update_password', 'name' => 'user_password', 'id' => 'user_password', 'method' => 'post']) !!}
+        {!! Form::open(['route' => 'users.update.password', 'name' => 'user_password', 'id' => 'user_password', 'method' => 'post']) !!}
         <div class="row">
             <div class="col-4">
                 <div class="form-group">
