@@ -39,7 +39,7 @@ class PostCommentsController extends Controller
         $sort_by = (isset(request()->sort_by) && request()->sort_by != '') ? request()->sort_by : 'id';
         $order_by = (isset(request()->order_by) && request()->order_by != '') ? request()->order_by : 'desc';
         $limit_by = (isset(request()->limit_by) && request()->limit_by != '') ? request()->limit_by : '10';
-        
+
         $comments = Comment::query();
 
         if($keyword != null) {
@@ -53,9 +53,9 @@ class PostCommentsController extends Controller
         if($status != null) {
             $comments = $comments->whereStatus($status);
         }
-   
+
         $comments = $comments->orderBy($sort_by, $order_by);
-        
+
         $comments = $comments->paginate($limit_by);
 
         $posts = Post::wherePostType('post')->pluck('title', 'id');
@@ -113,8 +113,8 @@ class PostCommentsController extends Controller
             $data['email']        = $request->email;
             $data['url']          = $request->url;
             $data['status']       = $request->status;
-            $data['comment']      = Purify::clean($request->comment);
-            
+            $data['comment']      = $request->comment;
+
             $comment->update($data);
 
             Cache::forget('recent_comments');
@@ -144,7 +144,7 @@ class PostCommentsController extends Controller
         }
 
         $comment = Comment::whereId($id)->first();
-        
+
         $comment->delete();
 
         Cache::forget('recent_comments');

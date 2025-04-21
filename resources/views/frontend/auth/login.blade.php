@@ -30,11 +30,11 @@
                             <a class="forget_pass" href="{{ route('password.request') }}">Lost your password?</a>
 
                             <div class="form__btn">
-                                <a href="{{ route('frontend.social_login', 'facebook') }}" class="btn btn-block" style="background-color: #1877f2; color: #FFF">Login With Facebook</a>    
-                                <a href="{{ route('frontend.social_login', 'twitter') }}" class="btn btn-block" style="background-color: #1DA1F2; color: #FFF">Login With Twitter</a>    
-                                <a href="{{ route('frontend.social_login', 'google') }}" class="btn btn-block">Login With Google</a>    
+                                <a href="{{ route('frontend.social_login', 'facebook') }}" class="btn btn-block" style="background-color: #1877f2; color: #FFF">Login With Facebook</a>
+                                <a href="{{ route('frontend.social_login', 'twitter') }}" class="btn btn-block" style="background-color: #1DA1F2; color: #FFF">Login With Twitter</a>
+                                <a href="{{ route('frontend.social_login', 'google') }}" class="btn btn-block">Login With Google</a>
                             </div>
-                        
+
                         </div>
                         {!! Form::close() !!}
                     </div>

@@ -20,7 +20,7 @@ use App\Notifications\NewCommentForPostOwnerNotify;
 class IndexController extends Controller
 {
     public function index() {
-        
+
         $posts = Post::with(['user', 'media', 'tags'])
             ->whereHas('category', function($q) {
                 $q->whereStatus(1);
@@ -43,7 +43,7 @@ class IndexController extends Controller
             ->whereHas('category', function($q) {
                 $q->whereStatus(1);
             })->whereHas('user', function($query) {
-                $query->whereStatus(1); 
+                $query->whereStatus(1);
             });
 
             if($keyword != null) {
@@ -93,7 +93,7 @@ class IndexController extends Controller
 
 
 
-    public function store_comment(Request $request, $slug) { 
+    public function store_comment(Request $request, $slug) {
         $validation = Validator::make($request->all(), [
             'name' =>  'required',
             'email'=>  'required|email',
@@ -112,7 +112,7 @@ class IndexController extends Controller
             $data['email']  =$request->email;
             $data['url']  =$request->url;
             $data['ip_address']  = $request->ip();
-            $data['comment']  = Purify::clean($request->comment);
+            $data['comment']  = $request->comment;
             $data['post_id']  = $post->id;
             $data['user_id']  = $userId;
 
@@ -181,7 +181,7 @@ class IndexController extends Controller
 
         if($category_id) {
             $posts = Post::with(['user', 'media', 'tags'])
-            ->whereCategoryId($category_id)   
+            ->whereCategoryId($category_id)
             ->post()
             ->active()
             ->orderBy('id', 'desc')
@@ -231,13 +231,13 @@ class IndexController extends Controller
         return view('frontend.index', compact('posts'));
     }
 
-    
+
     public function author($username) {
         $user_id = User::whereUsername($username)->whereStatus(1)->first()->id;
 
         if($user_id) {
             $posts = Post::with(['user', 'media'])
-            ->whereUserId($user_id)   
+            ->whereUserId($user_id)
             ->post()
             ->active()
             ->orderBy('id', 'desc')

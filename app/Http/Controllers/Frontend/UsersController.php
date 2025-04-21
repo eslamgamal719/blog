@@ -34,7 +34,7 @@ class UsersController extends Controller
             ->withCount('comments')
             ->orderBy('id', 'desc')->paginate(10);
 
-        
+
         return view('frontend.users.dashboard', compact('posts'));
     }
 
@@ -74,18 +74,18 @@ class UsersController extends Controller
                 }
                 $fileName = Str::slug(auth()->user()->username) . '.' . $image->getClientOriginalExtension();
                 $path = public_path('assets/users/' . $fileName);
-    
+
                 Image::make($image->getRealPath())->resize(300, 300, function($constraint) {
                     $constraint->aspectRatio();
                 })->save($path, 100);
-                
+
                 $data['user_image'] = $fileName;
 
             } else {
 
                 $fileName = Str::slug(auth()->user()->username) . '.' . $image->getClientOriginalExtension();
                 $path = public_path('assets/users/' . $fileName);
-    
+
                 Image::make($image->getRealPath())->resize(300, 300, function($constraint) {
                     $constraint->aspectRatio();
                 })->save($path, 100);
@@ -135,7 +135,7 @@ class UsersController extends Controller
                     'message'    => 'Password Updated Successfully',
                     'alert-type' => 'success'
                 ]);
-            }else { 
+            }else {
                 return redirect()->back()->with([
                     'message'     => 'Something Was Wrong',
                     'alert-type'  => 'danger'
@@ -158,7 +158,7 @@ class UsersController extends Controller
         $categories = Category::whereStatus(1)->pluck('name', 'id');
         return view('frontend.users.create_post', compact('categories', 'tags'));
     }
-    
+
 
 
     public function store_post(Request $request)
@@ -177,7 +177,7 @@ class UsersController extends Controller
         }
 
         $data['title']          = $request->title;
-        $data['description']    = Purify::clean($request->description);
+        $data['description']    = $request->description;
         $data['status']         = $request->status;
         $data['comment_able']   = $request->comment_able;
         $data['category_id']    = $request->category_id;
@@ -185,8 +185,7 @@ class UsersController extends Controller
         $post = auth()->user()->posts()->create($data);
 
         if($request->images && $request->images > 0) {
-
-            $i = 1; 
+            $i = 1;
             foreach($request->images as $file) {
 
                 $fileName = $post->slug . '-' . time() . '-' . $i . '.' . $file->getClientOriginalExtension();
@@ -229,11 +228,11 @@ class UsersController extends Controller
             'message'    => 'Post Created Successfully',
             'alert-type' => 'success'
         ]);
-    } 
-       
-    
+    }
+
+
     public function edit_post($post_id) {
-        
+
         $post = Post::whereSlug($post_id)->orWhere('id', $post_id)->whereUserId(auth()->id())->first();
 
         if($post) {
@@ -264,7 +263,7 @@ class UsersController extends Controller
 
         if($post) {
             $data['title']          = $request->title;
-            $data['description']    = Purify::clean($request->description);
+            $data['description']    = $request->description;
             $data['status']         = $request->status;
             $data['comment_able']   = $request->comment_able;
             $data['category_id']    = $request->category_id;
@@ -309,7 +308,7 @@ class UsersController extends Controller
 
                 Cache::forget('recent_posts');
                 Cache::forget('global_tags');
-            
+
 
             return redirect()->back()->with([
                 'message'     => 'Post Updated Successfully',
@@ -364,7 +363,7 @@ class UsersController extends Controller
             'alert-type'  => 'danger'
         ]);
     }
-    
+
 
     public function show_comments(Request $request) {
 
@@ -403,7 +402,7 @@ class UsersController extends Controller
 
 
     public function update_comment(Request $request, $comment_id) {
-        
+
         $validator = Validator::make($request->all(), [
             'name'      => 'required',
             'email'     => 'required|email',
@@ -425,7 +424,7 @@ class UsersController extends Controller
             $data['email']    = $request->email;
             $data['url']      = $request->url != '' ? $request->url : null;
             $data['status']   = $request->status;
-            $data['comment']  = Purify::clean($request->comment);
+            $data['comment']  = $request->comment;
 
             $comment->update($data);
 
@@ -444,7 +443,7 @@ class UsersController extends Controller
         ]);
     }
 
-    
+
     public function destroy_comment($comment_id) {
 
         $comment = Comment::whereId($comment_id)->whereHas('post', function($q) {
@@ -452,11 +451,11 @@ class UsersController extends Controller
         })->first();
 
         if($comment) {
-            
+
             $comment->delete();
-      
+
             Cache::forget('recent_comments');
-            
+
             return redirect()->back()->with([
                 'message'     => 'Comment Deleted Successfully',
                 'alert-type'  => 'success'
@@ -469,5 +468,5 @@ class UsersController extends Controller
     }
 
 
-    
+
 }

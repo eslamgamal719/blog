@@ -44,7 +44,7 @@ class PagesController extends Controller
         $limit_by = (isset(request()->limit_by) && request()->limit_by != '') ? request()->limit_by : '10';
 
         $categories = Category::orderBy('id', 'desc')->pluck('name', 'id');
-        
+
         $pages = Page::wherePostType('page');
 
         if($keyword != null) {
@@ -58,9 +58,9 @@ class PagesController extends Controller
         if($status != null) {
             $pages = $pages->whereStatus($status);
         }
-   
+
         $pages = $pages->orderBy($sort_by, $order_by);
-        
+
         $pages = $pages->paginate($limit_by);
 
         return view('backend.pages.index', compact('pages', 'categories'));
@@ -106,7 +106,7 @@ class PagesController extends Controller
         }
 
         $data['title']          = $request->title;
-        $data['description']    = Purify::clean($request->description);
+        $data['description']    = $request->description;
         $data['status']         = $request->status;
         $data['post_type']      = 'page';
         $data['comment_able']   = 0;
@@ -116,7 +116,7 @@ class PagesController extends Controller
 
         if($request->images && $request->images > 0) {
 
-            $i = 1; 
+            $i = 1;
             foreach($request->images as $file) {
 
                 $fileName = $page->slug . '-' . time() . '-' . $i . '.' . $file->getClientOriginalExtension();
@@ -144,7 +144,7 @@ class PagesController extends Controller
     }
 
 
-    public function show($id) 
+    public function show($id)
     {
         if(!auth()->user()->ability('admin', 'display_pages')) {
             return redirect('admin/index');
@@ -202,7 +202,7 @@ class PagesController extends Controller
         if($page) {
             $data['title']          = $request->title;
             $data['slug']           = null;
-            $data['description']    = Purify::clean($request->description);
+            $data['description']    = $request->description;
             $data['status']         = $request->status;
             $data['category_id']    = $request->category_id;
 
@@ -256,7 +256,7 @@ class PagesController extends Controller
         }
 
         $page = Page::whereId($id)->wherePostType('page')->first();
-        
+
         if($page) {
             if($page->media->count() > 0) {
                 foreach($page->media as $media) {

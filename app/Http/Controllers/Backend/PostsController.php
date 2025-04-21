@@ -46,7 +46,7 @@ class PostsController extends Controller
         $limit_by = (isset(request()->limit_by) && request()->limit_by != '') ? request()->limit_by : '10';
 
         $categories = Category::orderBy('id', 'desc')->pluck('name', 'id');
-        
+
         $posts = Post::with(['category', 'user', 'comments'])->wherePostType('post');
 
         if($keyword != null) {
@@ -66,9 +66,9 @@ class PostsController extends Controller
         if($status != null) {
             $posts = $posts->whereStatus($status);
         }
-   
+
         $posts = $posts->orderBy($sort_by, $order_by);
-        
+
         $posts = $posts->paginate($limit_by);
 
         return view('backend.posts.index', compact('posts', 'categories'));
@@ -116,9 +116,8 @@ class PostsController extends Controller
         if($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-
         $data['title']          = $request->title;
-        $data['description']    = Purify::clean($request->description);
+        $data['description']    = $request->description;
         $data['status']         = $request->status;
         $data['post_type']      = 'post';
         $data['comment_able']   = $request->comment_able;
@@ -128,7 +127,7 @@ class PostsController extends Controller
 
         if($request->images && $request->images > 0) {
 
-            $i = 1; 
+            $i = 1;
             foreach($request->images as $file) {
 
                 $fileName = $post->slug . '-' . time() . '-' . $i . '.' . $file->getClientOriginalExtension();
@@ -173,7 +172,7 @@ class PostsController extends Controller
         ]);
     }
 
-    public function show($id) 
+    public function show($id)
     {
         if(!auth()->user()->ability('admin', 'display_posts')) {
             return redirect();
@@ -234,7 +233,7 @@ class PostsController extends Controller
         if($post) {
             $data['title']          = $request->title;
             $data['slug']           = null;
-            $data['description']    = Purify::clean($request->description);
+            $data['description']    = $request->description;
             $data['status']         = $request->status;
             $data['comment_able']   = $request->comment_able;
             $data['category_id']    = $request->category_id;
@@ -264,7 +263,7 @@ class PostsController extends Controller
                 }
             }
 
-            
+
         if(count($request->tags) > 0) {
             $new_tags = [];
              foreach($request->tags as $tag) {
@@ -306,7 +305,7 @@ class PostsController extends Controller
         }
 
         $post = Post::whereId($id)->wherePostType('post')->first();
-        
+
         if($post) {
             if($post->media->count() > 0) {
                 foreach($post->media as $media) {
